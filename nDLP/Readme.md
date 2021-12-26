@@ -6,7 +6,7 @@
 How hard are discrete logarithms problems in Z_n? Try to solve the given [DLP](https://asisctf.com/tasks/nDLP_e29f9df33a5782c92e485a1bf648ca950d323024.txz).
 
 
-## Write UP
+## Writeup
 
 The file contains a discrete logarithm problem:
 

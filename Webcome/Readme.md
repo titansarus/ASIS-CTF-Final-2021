@@ -6,7 +6,7 @@ Welcome! I made a [website](http://65.21.255.24:5000/).
 
 Download the source code from [here](https://asisctf.com/tasks/welcome_697082013f8f7b6f0ed025f77272fc65082eb3dc.txz).
 
-## Write UP
+## Writeup
 
 In this challenge, the goal is to visit `/flag` route with a
 secret cookie after solving a captcha. The website also has a `/report` path, which you can make the server visit a website in the backend. Analyzing the code, we encountered some interesting parts in the homepage code:
