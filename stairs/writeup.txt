@@ -1,3 +1,0 @@
-This problem can be solved easily by some algebraic acts!
-The idea is using terms with different degrees to construct higher and lower degrees. For example by setting the `m=0` we have `M^5 + M`. Afterward by setting `m=+/- 1` we have `(M+1)^5 + M + 1` and `(M-1)^5 + M - 1` respectively. By adding/subtracting the two later terms we can achive new terms with degree 3 and 4. Now we can build terms with degree 8 in 2 ways. The first one is squaring the 4th degree term. The other way is to multiply 3th degree and 5th degree terms. Now we try to eliminate the 8th degree and getting new terms. By continuing this procedure we can finaly compute `M`, which leads us the flag.
-For the more description on details of the computations see the comments in the code.
