@@ -51,7 +51,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 That simply allows the user to pass advanced formatted queries, which may help bypass some security measurements if not applied cautiously. But we could not get much use of it. (We were thinking of ways to somehow bypass `msg` query sanitizations, or even manipulate the captcha verification process by crafting a special value for `g-recaptcha-response`, which gets passed to the `/flag` path is used to authenticate the solved captcha).
 
 ### Solution
-We first tried to reconstruct the captcha on our end by getting its required parameters from the backend server. After some investigation, it turned out to be too complex, so we dumped the idea.
+Our solution was to craft a specific url that contains a script which makes the backend browser (that has the secret cookie) to visit the `/flag` path and sending the flag to our endpoint API, but first we had to bypass the captcha.
 
 #### Bypassing ReCaptcha
 We first tried to reconstruct the captcha on our end by getting its required parameters from the backend server. After some investigation it turned out to be too advanced so we dumped the idea.
