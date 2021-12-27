@@ -1,3 +1,58 @@
+# RAS
+
+
+## Description
+
+[RAS](https://asisctf.com/tasks/RAS_4e2b7ccee334c091280d6bb9ff9d15b6b7f69528.txz) is an ancient RSA like challenge for Christmas Day!
+
+`ras.py`:
+```python
+#!/usr/bin/env python3
+
+from Crypto.Util.number import *
+from flag import flag
+
+def genparam(nbit):
+	while True:
+		a, b = getRandomRange(2, nbit), getRandomRange(32, nbit)
+		if (a ** b).bit_length() == nbit:
+			return a ** b
+
+def genkey(nbit):
+	p, q = [_ + (_ % 2) for _ in [genparam(nbit) for _ in '01']]
+	while True:
+		P = p + getPrime(31)
+		if isPrime(P):
+			while True:
+				Q = q + getPrime(37)
+				if isPrime(Q):
+					return P, Q
+
+def encrypt(m, pubkey):
+	e = 0x10001
+	assert m < pubkey
+	c = pow(m, e, pubkey)
+	return c
+
+nbit = 512
+P, Q = genkey(nbit)
+pubkey = P * Q
+flag = bytes_to_long(flag)
+enc = encrypt(flag, pubkey)
+print(f'pubkey = {pubkey}')
+print(f'enc = {enc}')
+```
+
+`output.txt`:
+```
+pubkey = 56469405750402193641449232753975279624388972985036568323092258873756801156079913882719631252209538683205353844069168609565141017503581101845476197667784484712057287713526027533597905495298848547839093455328128973319016710733533781180094847568951833393705432945294907000234880317134952746221201465210828955449
+enc = 11104433528952071860984483920122173351342473018268740572598132083816861855404615534742178674185812745207876206939230069251889172817480784782618716608299615251541018034321389516732611030641383571306414414804563863131355221859432899624060128497648444189432635603082478662202695641001726208833663163000227827283
+```
+
+## Writeup
+
+
+
 In order to find `p` and `q` we test all of the possible values of `a` and `b` of `genparam` function:
 
 ```python
@@ -47,10 +102,10 @@ if __name__ == '__main__':
 
 `genb` receives a variable `a` and returns a value of `b` such that `a**b` has 512 bits.
 
-We find all such `(a,b)` pairs. Also we know that `N` has about 1024 bits but `N - p * q` will have less than 600 bits. So we do this additional test and will see that only one choice for `{p,q}` will remain at last.
+We find all such `(a,b)` pairs. Also, we know that `N` has about 1024 bits, but `N - p * q` will have less than 600 bits. So we do this additional test and will see that only one choice for `{p,q}` will remain at last.
 
 Then we execute the following code to find `P`.
-We should run this code twice(one instance for each of the obtained 512 bit numbers)
+We should run this code twice(one instance for each of the obtained 512-bit numbers)
 in parallel in order to find the 31 bit prime sooner.
 
 ```python
@@ -74,9 +129,9 @@ Note that:
 
 * The `rem` and `cnt` variables are used to monitor the progress. They don't play a role in finding proper i value
 * The `i % 6 in [1, 5]` is a weak test on `i` to be prime and improve the speed of the code.
-* For loop step length is 2 as `i` should be prime and thus not be an even number.
+* For loop step length is 2 as `i` should be prime and thus not an even number.
 
-In case of `23**113 + 1` input to the code, it will print `1158518719` in 40th step. So we add this value to `23**113 + 1` to obtain `P` and then divide `N` by `P` to optain `Q`.
+In the case of `23**113 + 1` input to the code, it will print `1158518719` in the 40th step. So we add this value to `23**113 + 1` to obtain `P` and then divide `N` by `P` to obtain `Q`.
 
 ```python
 from Crypto.Util.number import long_to_bytes
